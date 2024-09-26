@@ -98,6 +98,25 @@ fn main() {
     let m = no_dangle();
     println!("{}", m);
 
+
+    // 假设一个例子，你想在一个字符串中寻找第一个为空格的索引来确定第一个单词。
+    // 假如你编写的函数只返回索引的数值，那么在这个字符串修改过后，这个索引就
+    // 失去了作用，它可能指向一个新的字节。所以，我们定义的函数应该返回该字符串
+    // 的一个切片引用，来让编译器在编译期为程序员检查这个切片引用在使用时，其原
+    // 字符串是否收到了修改。以下是一段无法通过编译的示例：
+    // let mut s = String::from("hello world");
+
+    // let word = first_word(&s);
+
+    // s.clear(); // 错误！
+
+    // println!("the first word is: {}", word);
+
+    // 因为字符串字面值是直接存储在二进制文件中的，所以其类型 &str 是一个不可变
+    // 引用。为了提高可兼容性，我们可以将如下取第一个单词的函数签名改为：
+    // fn first_word(s: &str) -> &str {
+    // 因为 String 类型也可以通过切片引用的形式传入
+
     
 } // 从此处开始 s 失效
 
@@ -121,4 +140,16 @@ fn no_dangle() -> String {
     let s = String::from("hello");
 
     s
+}
+
+fn first_world(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[..i];
+        }
+    }
+
+    &s[..]
 }
