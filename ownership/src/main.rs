@@ -37,7 +37,7 @@ fn main() {
     takes_ownership(s); // s 的所有权被移动到函数中
     // s 的值在函数调用结束后失效
 
-    let mut x = 5;
+    let x = 5;
     makes_copy(x); // 因为 i32 是 Copy 的，所以 x 的值不会失效
 
     // 大部分情况，我们在调用函数过后任然需要使用变量,
@@ -117,6 +117,11 @@ fn main() {
     // fn first_word(s: &str) -> &str {
     // 因为 String 类型也可以通过切片引用的形式传入
 
+    let s = String::from("hello world");
+
+    let word = first_word(&s[..]);
+
+    println!("the first word is: {}", word);
     
 } // 从此处开始 s 失效
 
@@ -142,7 +147,7 @@ fn no_dangle() -> String {
     s
 }
 
-fn first_world(s: &String) -> &str {
+fn first_word(s: &str) -> &str {
     let bytes = s.as_bytes();
 
     for (i, &item) in bytes.iter().enumerate() {
