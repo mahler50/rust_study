@@ -1,3 +1,4 @@
+#![allow(unused)]
 struct User {
     active: bool,
     username: String,
@@ -23,7 +24,7 @@ fn area(rect: &Rectangle) -> u32 {
 
 // 这是 Rectangle 结构体的方法，方法的首个参数都是 &self，这在oop
 // 特性的语言中几乎一致。如果需要方法对对象数据进行修改，则需要改为
-// &mut self
+// &mut self。所有在 impl 内的函数称为关联函数
 impl Rectangle {
     // 计算矩形面积
     fn area(&self) -> u32 {
@@ -33,6 +34,15 @@ impl Rectangle {
     // 当前矩形是否可容纳另一个矩形
     fn can_hold(&self, another: &Rectangle) -> bool {
         self.width > another.width && self.height > another.height
+    }
+
+    // 方法的参数也可不包含 self，这些一般都为该结构体的构造函数，
+    // 比如我们声明了一个创建正方形的函数
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
     }
 }
 
@@ -105,6 +115,8 @@ fn main() {
     println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
     println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
 
+    let sqr = Rectangle::square(6);
+    dbg!(&sqr);
 
 }
 
